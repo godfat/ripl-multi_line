@@ -15,6 +15,7 @@ module Ripl
       ].map{|e| Regexp.escape(e)}*'|' }/
 
     def before_loop
+      Ripl.config[:multi_line_prompt] ||= "|#{' '*(@prompt.size-1)}"
       super
       @buffer = nil
     end
@@ -39,7 +40,7 @@ module Ripl
         super
       end
     end
-  
+
     def loop_eval(input)
       if @buffer
         super @buffer*"\n" + "\n" + input
@@ -68,6 +69,5 @@ module Ripl
 end
 
 Ripl::Shell.include Ripl::MultiLine
-Ripl.config[:multi_line_prompt] ||= '|    '
 
 # J-_-L
